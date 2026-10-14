@@ -1,0 +1,28 @@
+{
+  "server": "campus-customs",
+  "database": "data/campus_customs_new.db",
+  "shop_date_today": "2026-08-31",
+  "client": "Claude Code (Vibe Coder)",
+  "prompt": "Okay, within this folder, there should be um, a MPC server. I want to make sure that you have access to the tools and then run the smoke test. Uh, I can provide additional context. I just want to make sure you have access before continuing.",
+  "calls": [
+    {
+      "tool": "check_customer_order_fulfillment",
+      "arguments": {"ticket_id": 101},
+      "output": {"shop_date_today":"2026-08-31","ticket":{"id":101,"type":"customer_order","requester":"Tauhid Zaman","subject":"Bulldog tee","status":"open","notes":"Needs a tee in size S.","created_at":"2026-08-31T09:15:00-04:00"},"sku":"CC-TEE-WHITE","product_name":"Classic Bulldog Tee","size_requested":"S","qty_requested":1,"qty_on_hand":0,"location":"Aisle B","can_fill_from_stock":false,"shortfall":1,"other_sizes_in_stock":[{"size":"M","qty":5,"location":"Aisle B"},{"size":"L","qty":3,"location":"Aisle B"},{"size":"XL","qty":2,"location":"Aisle B"}],"linked_invoice":{"id":501,"vendor_id":1,"amount":840,"due_date":"2026-08-28","status":"open","description":"Rush reprint CC-TEE-WHITE S","days_overdue":3},"linked_vendor":{"id":1,"name":"Bulldog Print Co","specialty":"apparel reprint","lead_days":5,"open_invoices":[{"id":501,"vendor_id":1,"amount":840,"due_date":"2026-08-28","status":"open","description":"Rush reprint CC-TEE-WHITE S","days_overdue":3}],"blocked_by_unpaid_invoice":true,"earliest_eta_if_unblocked_today":"2026-09-05"}},
+      "db_check": "inventory CC-TEE-WHITE S qty=0 (M 5, L 3, XL 2, Aisle B); ticket 101 invoice_id=501; invoice 501 = $840 open, due 2026-08-28 (3 days before 2026-08-31); vendor 1 Bulldog Print Co lead_days=5 -> 2026-09-05. MATCH"
+    },
+    {
+      "tool": "check_rent_due_and_cash",
+      "arguments": {"ticket_id": 102},
+      "output": {"shop_date_today":"2026-08-31","ticket":{"id":102,"type":"rent_notice","requester":"Elm City Properties","subject":"Rent due","status":"open","notes":"Email: shop rent due in 2 days.","created_at":"2026-08-31T11:05:00-04:00"},"lease_id":1,"space_name":"Chapel Street shop","landlord":"Elm City Properties","monthly_rent":2400,"next_due":"2026-09-02","days_until_due":2,"is_overdue":false,"cash_accounts":[{"name":"checking","balance":3400,"as_of":"2026-08-31"}],"total_cash":3400,"can_cover_rent":true,"cash_after_rent":1000,"other_open_invoices":[{"id":501,"vendor_id":1,"amount":840,"due_date":"2026-08-28","status":"open","description":"Rush reprint CC-TEE-WHITE S","days_overdue":3}],"cash_after_rent_and_open_invoices":160},
+      "db_check": "lease 1 monthly_rent=2400, next_due=2026-09-02 (2 days); checking balance=3400; 3400-2400=1000; 1000-840 (invoice 501)=160. MATCH"
+    },
+    {
+      "tool": "quote_bulk_order_discount",
+      "arguments": {"ticket_id": 103, "discount_pct": 15},
+      "note": "Ticket 103 does not name a discount; 15% was chosen as a test value.",
+      "output": {"shop_date_today":"2026-08-31","ticket":{"id":103,"type":"price_override","requester":"Yale AI Club","subject":"Bulk hoodie discount","status":"open","notes":"Student org wants 20 hoodies, size M, asking for a bulk discount.","created_at":"2026-08-31T16:55:00-04:00"},"sku":"CC-HOOD-NAVY","product_name":"Basic Hoodie Big Yale","size_requested":"M","qty_requested":20,"qty_on_hand":8,"shortfall":12,"all_sizes":[{"size":"S","qty":4,"location":"Aisle A"},{"size":"M","qty":8,"location":"Aisle A"},{"size":"L","qty":14,"location":"Aisle A"},{"size":"XL","qty":6,"location":"Aisle A"}],"unit_cost":22,"list_price":58,"discount_pct":15,"quoted_unit_price":49.3,"margin_per_unit":27.3,"margin_pct":55.4,"order_revenue":986,"order_gross_profit":546,"max_discount_pct_before_loss":62.1,"restock_cost_at_unit_cost":264,"vendors":[{"id":1,"name":"Bulldog Print Co","specialty":"apparel reprint","lead_days":5,"open_invoices":[{"id":501,"vendor_id":1,"amount":840,"due_date":"2026-08-28","status":"open","description":"Rush reprint CC-TEE-WHITE S","days_overdue":3}],"blocked_by_unpaid_invoice":true,"earliest_eta_if_unblocked_today":"2026-09-05"},{"id":2,"name":"Elm City Gifts","specialty":"mugs and small goods","lead_days":3,"open_invoices":[],"blocked_by_unpaid_invoice":false,"earliest_eta_if_unblocked_today":"2026-09-03"},{"id":3,"name":"QuickShip CT","specialty":"local courier","lead_days":1,"open_invoices":[],"blocked_by_unpaid_invoice":false,"earliest_eta_if_unblocked_today":"2026-09-01"}]},
+      "db_check": "inventory CC-HOOD-NAVY M qty=8 vs 20 requested -> shortfall 12; pricing cost 22 / list 58; 58*0.85=49.30; margin 27.30 (55.4%); revenue 20*49.30=986; profit 20*27.30=546; break-even discount 1-22/58=62.1%; restock 12*22=264; vendor lead days 5/3/1. MATCH"
+    }
+  ]
+}

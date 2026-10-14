@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "campus-customs": {
+      "type": "stdio",
+      "command": ".venv/Scripts/python.exe",
+      "args": ["mcp_server/server.py"],
+      "env": {
+        "CAMPUS_CUSTOMS_DB": "data/campus_customs_new.db",
+        "FASTMCP_SHOW_SERVER_BANNER": "false"
+      }
+    }
+  }
+}

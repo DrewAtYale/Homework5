@@ -1,0 +1,27 @@
+# Secrets: never commit the real key (use .env.example as the template)
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Local tooling and notes (not part of the submission)
+.claude/
+SESSION_HANDOFF.md
+output/audit_trail.corrupt-*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Note: data/campus_customs.db and data/campus_customs_new.db ARE committed on purpose,
+# so graders can run the app without extra setup.

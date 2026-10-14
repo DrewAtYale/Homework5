@@ -1,0 +1,14 @@
+# Python dependencies for Homework 5 (MCP server + agent backend). Python 3.14.
+#   python -m venv .venv
+#   .\.venv\Scripts\Activate.ps1
+#   pip install -r requirements.txt
+# The dashboard's dependencies are in frontend/package.json (npm install).
+
+fastmcp==4.1.0
+mcp==2.3.0
+pydantic==2.14.1
+pydantic-ai-slim[openai,mcp,fastmcp]==2.54.0
+openai==3.31.0
+fastapi==0.142.2
+uvicorn[standard]==0.54.0
+python-dotenv==1.2.4
